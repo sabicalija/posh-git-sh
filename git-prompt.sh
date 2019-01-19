@@ -181,9 +181,16 @@ __posh_git_echo () {
     local WorkingForegroundColor=$(__posh_color '\e[0;31m') # Dark red
     local WorkingBackgroundColor=
 
-    local StashForegroundColor=$(__posh_color '\e[0;34m') # Darker blue
+    # local StashForegroundColor=$(__posh_color '\e[38;5;240m') # Darker Gray
+    # local StashForegroundColor=$(__posh_color '\e[38;5;129m') # Magenta
+    local StashForegroundColor=$(__posh_color '\e[38;5;23m') # Darker Cyan
     local StashBackgroundColor=
-    local StashText=\\'$'
+    # local StashCountForegroundColor=$(__posh_color '\e[38;5;255m') # White
+    # local StashCountForegroundColor=$(__posh_color '\e[38;5;13m') # Lighter Magenta
+    local StashCountForegroundColor=$(__posh_color '\e[38;5;6m') # Cyan
+    local StashCountBackgroundColor=
+    local StashTextPrefix='{#'
+    local StashTextSuffix='}'
 
     local RebaseForegroundColor=$(__posh_color '\e[0m') # reset
     local RebaseBackgroundColor=
@@ -424,10 +431,11 @@ __posh_git_echo () {
     gitstring+="$AfterBackgroundColor$AfterForegroundColor$AfterText"
 
     if $ShowStashState && $hasStash; then
-        gitstring+="$StashBackgroundColor$StashForegroundColor"$StashText
+        gitstring+="$StashBackgroundColor$StashForegroundColor"$StashTextPrefix
         if $ShowStashCount; then
-            gitstring+=$stashCount
+            gitstring+=$StashCountBackgroundColor$StashCountForegroundColor$stashCount
         fi
+        gitstring+=$StashBackgroundColor$StashForegroundColor$StashTextSuffix
     fi
     gitstring+="$DefaultBackgroundColor$DefaultForegroundColor"
     echo "$gitstring"
